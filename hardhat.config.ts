@@ -1,6 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import {chains} from "./chains.json";
+import chains from "./chains.json";
 import dotenv from 'dotenv';
 dotenv.config();
 

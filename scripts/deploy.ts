@@ -26,8 +26,12 @@ async function main() {
      );
   
      const deployedAddress = await deployerContract.callStatic.deploy(creationCode, salt);
-  
+
      console.log(`${chain.name}, address: ${deployedAddress}`);
+
+     const value = await new ethers.Contract(deployedAddress, ['function balance() public payable returns (uint)'], connectedWallet);
+
+     console.log(`${value.balance()}`);
     }
 }
 

@@ -1,13 +1,6 @@
-# Sample Hardhat Project
+# Swisstronik Developer challenge 2
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Leaveraging Axelar I was able to deploy both contracts on their respective chains with the same address.
+  
+  Contract Address: 0x7DeCFeEa2f9D101233fC23dB38963641F6402b22
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
