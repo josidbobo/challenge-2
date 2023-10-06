@@ -1,0 +1,19 @@
+[
+    {
+       "name": "Polygon",
+       "chainId": 80001,
+       "gateway": "0xBF62ef1486468a6bd26Dd669C06db43dEd5B849B",
+       "rpc": "https://polygon-mumbai.infura.io/v3/4458cf4d1689497b9a38b1d6bbf05e78",
+       "tokenName": "Matic",
+       "tokenSymbol": "MATIC"
+    },
+    {
+       "name": "Swisstronik",
+       "chainId": 1291,
+       "rpc": "https://json-rpc.testnet.swisstronik.com",
+       "gateway": "",
+       "tokenName": "Swtr",
+       "tokenSymbol": "SWTR"
+    }
+]
+

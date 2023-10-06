@@ -1,18 +1,38 @@
-import { ethers } from "hardhat";
+import { Wallet, getDefaultProvider, BigNumber, ethers } from 'ethers';
+import json from '../artifacts/contracts/SwissBank.sol/SwissBank.json';
+import Create3Deployer from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/deploy/Create3Deployer.sol/Create3Deployer.json';
+import chains from '../chains.json';
+
+const CREATE_3_DEPLOYER = '0xf49B10ccFB7D82C3a8749fFB1aAF3e0c936Eba36';
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+     const privateKey = process.env.PRIVATE_KEY;
+  
+     if (!privateKey) {
+        throw new Error('Invachorlid private key. Make sure the PRIVATE_KEY environment variable is set.');
+     }
+  
+     const currentTimestampInSeconds = Math.round(Date.now() / 1000);
+     const unlockTime = currentTimestampInSeconds + 60;
+     const evmChains = getEvmChains();
+  
+     for (const chain of evmChains) {
+        const wallet = new Wallet(privateKey);
+        const provider = getDefaultProvider(chain.rpc);
+        const connectedWallet = wallet.connect(provider);
+        const deployerContract = new ethers.Contract(CREATE_3_DEPLOYER, Create3Deployer.abi, connectedWallet);
+        const salt = ethers.utils.hexZeroPad(BigNumber.from(101), 32);
+        const creationCode = ethers.utils.solidityPack( ['bytes', 'bytes'], [json.bytecode, ethers.utils.defaultAbiCoder.encode(['uint256'], [unlockTime])]
+     );
+  
+     const deployedAddress = await deployerContract.callStatic.deploy(creationCode, salt);
+  
+     console.log(`${chain.name}, address: ${deployedAddress}`);
+    }
+}
 
-  const lockedAmount = ethers.utils.parseEther("1");
-
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(`Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`);
+function getEvmChains() {
+  return chains.map((chain: any) => ({ ...chain }));
 }
 
 // We recommend this pattern to be able to use async/await everywhere
