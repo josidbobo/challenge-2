@@ -2,6 +2,7 @@ import { Wallet, getDefaultProvider, BigNumber, ethers } from 'ethers';
 import json from '../artifacts/contracts/SwissBank.sol/SwissBank.json';
 import Create3Deployer from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/deploy/Create3Deployer.sol/Create3Deployer.json';
 import chains from '../chains.json';
+const hre = require("hardhat");
 
 const CREATE_3_DEPLOYER = '0xf49B10ccFB7D82C3a8749fFB1aAF3e0c936Eba36';
 
@@ -9,7 +10,7 @@ async function main() {
      const privateKey = process.env.PRIVATE_KEY;
   
      if (!privateKey) {
-        throw new Error('Invachorlid private key. Make sure the PRIVATE_KEY environment variable is set.');
+        throw new Error('Invalid private key. Make sure the PRIVATE_KEY environment variable is set.');
      }
   
      const currentTimestampInSeconds = Math.round(Date.now() / 1000);
@@ -26,9 +27,12 @@ async function main() {
      );
   
      const deployedAddress = await deployerContract.callStatic.deploy(creationCode, salt);
+    // const Escrow = await ethers.getContractFactory("SwissBank");
+	  // const escrow = await Escrow.deploy();
 
-     console.log(`${chain.name}, address: ${deployedAddress}`);
-
+	  // console.log("Escrow", escrow.address);
+    console.log(`${chain.name}, address: ${deployedAddress}`);
+      // Calling the first state variable
      const value = await new ethers.Contract(deployedAddress, ['function balance() public payable returns (uint)'], connectedWallet);
 
      console.log(`${value.balance()}`);
