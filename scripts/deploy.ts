@@ -33,9 +33,10 @@ async function main() {
 	  // console.log("Escrow", escrow.address);
     console.log(`${chain.name}, address: ${deployedAddress}`);
       // Calling the first state variable
-     const value = await new ethers.Contract(deployedAddress, ['function balance() public payable returns (uint)'], connectedWallet);
+    const result = provider.getStorageAt(deployedAddress, [0]);
+     //const value = await new ethers.Contract(deployedAddress, ['function balance() public payable returns (uint)'], connectedWallet);
 
-     console.log(`${value.balance()}`);
+     console.log(result);
     }
 }
 
